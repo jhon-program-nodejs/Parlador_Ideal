@@ -18,7 +18,7 @@ const LoginDeUsuario = () => {
     height:'100%',
 	borderRadius: 5}}
 
-	colors={['#740ecd', '#a255e8', '#debbf7']}>
+	colors={['#253549', '#7c8692', '#d3d7db']}>
                 <Title />
                 <Form />
 </LinearGradient>

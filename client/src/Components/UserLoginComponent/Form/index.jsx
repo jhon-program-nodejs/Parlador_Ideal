@@ -50,22 +50,26 @@ export default function Form({ navigation }) {
 
       })
 
+      console.log(resultFilterData.userName === userName);
+      console.log(resultFilterData.senha === senha);
 
       if (resultFilterData.userName === userName && resultFilterData.senha === senha) {
-
-
-
-        console.log('Usuario Logado!!!')
+        setHiddenAndVisybleAnimation('flex')
+        setHiddenAndVisybleText('none')
+        setTimeout(()=>{
+          
+          goToNextPageRegister('Posts')
+          
+        },7000)
         setUsername('')
         setSenha('')
-        setTextCadsastro('logando...')
       } else if ((regex.regexEmail.test(userName) !== true || resultFilterData.userName === undefined) && resultFilterData.userName !== userName) {
         console.log('Aqui estamos no usuario nao encontrado');
         const menssage = 'Usuario não encontrado !'
         alertFunction(menssage, 10000)
         return
       }
-      else if ((regex.regexSenha.test(senha) !== true || resultFilterData.senha === undefined)) {
+      else if ((regex.regexSenha.test(senha) !== true || resultFilterData.senha === undefined || senha === null)) {
         console.log('Aqui estamos no usuario senha invalida');
         const message = `Senha incorreta !`
         alertFunction(message, 10000)
@@ -84,16 +88,12 @@ export default function Form({ navigation }) {
     setInconName('eye-closed')
   }
 
-  const goToNextPageRegister = () => {
-    setHiddenAndVisybleAnimation('flex')
-    setHiddenAndVisybleText('none')
-    setTimeout(()=>{
+  const goToNextPageRegister = (router) => {
       
-      setGoToNextPage(navigation.navigate('RegisterUser'))
+      setGoToNextPage(navigation.navigate(router))
       setHiddenAndVisybleAnimation('none')
       setHiddenAndVisybleText('flex')
       
-    }, 10000)
     return goToNextPage
   }
 
@@ -236,7 +236,7 @@ export default function Form({ navigation }) {
       >
         <Text
           style={styles.buttonText}
-          onPress={() => goToNextPageRegister()}
+          onPress={() => sendValues()}
         >
           Entrar
         </Text>
@@ -246,7 +246,15 @@ export default function Form({ navigation }) {
         <TouchableOpacity>
           <Text
             style={styles.text}
-            onPress={goToNextPageRegister}
+            onPress={()=>{
+              setHiddenAndVisybleAnimation('flex')
+              setHiddenAndVisybleText('none')
+              setTimeout(()=>{
+                
+                goToNextPageRegister('RegisterUser')
+                
+              },7000)
+              }}
           >
             {textCadsastro}
           </Text>
@@ -256,12 +264,11 @@ export default function Form({ navigation }) {
                 style={{
                   width: 100,
                   height: 100,
-                  backgroundColor: '##debbf7',
-                  fontSize: 40,
-
                 }}
                 source={animationJson}
+                speed={.2}
                 autoPlay
+                loop
               />
             </View>
           </View>
