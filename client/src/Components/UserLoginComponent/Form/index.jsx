@@ -62,13 +62,13 @@ export default function Form({ navigation }) {
       } else if ((regex.regexEmail.test(userName) !== true || resultFilterData.userName === undefined) && resultFilterData.userName !== userName) {
         console.log('Aqui estamos no usuario nao encontrado');
         const menssage = 'Usuario não encontrado !'
-        alertFunction(menssage, 2000)
+        alertFunction(menssage, 10000)
         return
       }
       else if ((regex.regexSenha.test(senha) !== true || resultFilterData.senha === undefined)) {
         console.log('Aqui estamos no usuario senha invalida');
         const message = `Senha incorreta !`
-        alertFunction(message, 5000)
+        alertFunction(message, 10000)
       }
 
     }).catch(err => console.log(err))

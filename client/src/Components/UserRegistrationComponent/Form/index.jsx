@@ -37,7 +37,6 @@ export default function Form({ navigation }) {
     Axios.get('http:/192.168.1.12:4000/consult').then(usuarios => {
 
       const { data } = usuarios
-      console.log(data)
       data.forEach(element => {
         if (element.userName === userName) {
           resultFilterData.userName = element.userName
@@ -49,28 +48,45 @@ export default function Form({ navigation }) {
 
       })
 
-      console.log(senha, userName);
-
-      if (resultFilterData.userName === userName && resultFilterData.senha === senha) {
-
-        console.log('Usuario Logado!!!')
-        setUsername('')
-        setSenha('')
-        setTextCadsastro('logando...')
-        return
-      } else if ((regex.regexEmail.test(userName) !== true || resultFilterData.userName === undefined) && resultFilterData.userName !== userName) {
-
-        const menssage = 'Usuario não encontrado !'
+      const emailRegexValidation = regex.regexEmail.test(userName) 
+      const senhaRegexValidation =  regex.regexSenha.test(userName)
+      const validation = resultFilterData.userName !== userName 
+      const identicalPasswords = senha === confimationsenha
+      
+      if (( emailRegexValidation && senhaRegexValidation && validation &&  identicalPasswords )) {
+          setSenha('')
+          setConfimationSenha('')
+         Axios.post('http:/192.168.1.12:4000/mandar', {
+              userName: userName,
+              senha: senha
+            }).then(()=> console.log('Usuário cadastrado com sucesso!')).catch(err => console.log(err))
         alertFunction(menssage, 2000)
 
-      }
-      else if ((regex.regexSenha.test(senha) !== true || resultFilterData.senha === undefined)) {
-        if (resultFilterData.senha !== senha) {
-
+      } else if (!emailRegexValidation && userName ===  null ) {
+        
+        if (userName === null) {
+          const message = `Campo de email vazio!...`
+          alertFunction(message, 7000)
+        }else{
+          const message = `O email ${userName} está incorreto...`
+          alertFunction(message, 7000)
+          
         }
-        const message = `Senha incorreta !`
+        if (emailRegexValidation === false && userName !== null) {
+          const message = `O email ${userName} ja está cadastrado!...`
+        alertFunction(message, 7000)
+        }
+      }else if(senhaRegexValidation === false && senha === null){
+        const message = `Senha ${senha} incorreta!\n Verifique se a senha tem pelo menos uma letra maiúscula, uma letra minúscula, um caracter especial e ou um número`
         alertFunction(message, 5000)
-        return
+        if(senha === null){
+          const message = `Campo senha vazio!`
+        alertFunction(message, 5000)
+        }
+        if(identicalPasswords === false){
+          const message = `A senhas não coincidem!...`
+        alertFunction(message, 7000)
+        }
       }
 
     }).catch(err => console.log(err))
