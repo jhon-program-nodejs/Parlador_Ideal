@@ -1,4 +1,4 @@
-const senhaMysql = 'ja2213182019'
+const senhaMysql = 'senha MYSQL'
  
 
 /*  Axios.post('http:/192.168.1.12:4000/mandar', {
